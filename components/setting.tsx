@@ -30,7 +30,7 @@ type ResponseFromServer = {
   playTime: string;
 };
 
-export default function SettingPage({
+export default function SettingComponent({
   setting: { locationName, locationDetail, date, time, price, playTime },
 }: ContentPageProps) {
   const [inputedSetting, setInputedSetting] = useState({
@@ -44,6 +44,7 @@ export default function SettingPage({
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
+  // Push To SettingDB
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
@@ -77,12 +78,29 @@ export default function SettingPage({
     }
   };
 
+  const handleDeleteAllPlayer = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/deleteAllPlayer`,
+        {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      await response.json();
+      window.location.reload();
+    } catch (errors) {
+      console.log('An error occurred while deleting ', errors);
+    }
+  }
+
   return (
-    <div className='max-w-xl mx-auto w-full'>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 py-20"
-      >
+    <div className="max-w-xl mx-auto w-full">
+      {/* Setting */}
+      <form onSubmit={handleSubmit} className="space-y-4 py-20">
         {error ? <div className="alert-error">{error}</div> : null}
         {message ? <div className="alert-message">{message}</div> : null}
         <div className="form-group">
@@ -236,8 +254,12 @@ export default function SettingPage({
         </button>
       </form>
       <div>
-        <h1 className='text-2xl border-b border-gray-200 py-2'>Show Setting</h1>
-        <ul className='mt-2'>
+        Detele All Player: <button className="p-3 border rounded-md" onClick={handleDeleteAllPlayer}>Iya Delete</button>
+      </div>
+
+      <div>
+        <h1 className="text-2xl border-b border-gray-200 py-2">Show Setting</h1>
+        <ul className="mt-2">
           <li>Lokasi: {locationName}</li>
           <li>Detail Lokasi: {locationDetail}</li>
           <li>Tanggal: {date}</li>
@@ -250,38 +272,3 @@ export default function SettingPage({
   );
 }
 
-export async function getStaticProps({}: GetStaticPropsContext<PageParams>): Promise<
-  GetStaticPropsResult<ContentPageProps>
-> {
-  try {
-    const response = await fetch('http://localhost:3000/api/getSetting');
-
-    const responseFromServer: ResponseFromServer = await response.json();
-
-    return {
-      props: {
-        setting: {
-          locationName: responseFromServer.locationName,
-          locationDetail: responseFromServer.locationDetail,
-          date: responseFromServer.date,
-          time: responseFromServer.time,
-          price: responseFromServer.price,
-          playTime: responseFromServer.playTime,
-        },
-      },
-    };
-  } catch (e) {
-    return {
-      props: {
-        setting: {
-          locationName: '',
-          locationDetail: '',
-          date: '',
-          time: '',
-          price: '',
-          playTime: '',
-        },
-      },
-    };
-  }
-}
