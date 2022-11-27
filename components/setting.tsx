@@ -1,12 +1,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable object-shorthand */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
 import { useState } from 'react';
-
-type PageParams = {
-  id: string;
-};
 
 type Setting = {
   locationName: string;
@@ -21,14 +16,6 @@ type ContentPageProps = {
   setting: Setting;
 };
 
-type ResponseFromServer = {
-  locationName: string;
-  locationDetail: string;
-  date: string;
-  time: string;
-  price: string;
-  playTime: string;
-};
 
 export default function SettingComponent({
   setting: { locationName, locationDetail, date, time, price, playTime },
