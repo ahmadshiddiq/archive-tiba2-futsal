@@ -78,10 +78,10 @@ export default function SettingPage({
   };
 
   return (
-    <div>
+    <div className='max-w-xl mx-auto w-full'>
       <form
         onSubmit={handleSubmit}
-        className="max-w-xl mx-auto space-y-4 py-20"
+        className="space-y-4 py-20"
       >
         {error ? <div className="alert-error">{error}</div> : null}
         {message ? <div className="alert-message">{message}</div> : null}
@@ -235,6 +235,17 @@ export default function SettingPage({
           Submit
         </button>
       </form>
+      <div>
+        <h1 className='text-2xl border-b border-gray-200 py-2'>Show Setting</h1>
+        <ul className='mt-2'>
+          <li>Lokasi: {locationName}</li>
+          <li>Detail Lokasi: {locationDetail}</li>
+          <li>Tanggal: {date}</li>
+          <li>Jam: {time}</li>
+          <li>Harga: Rp.{price}</li>
+          <li>Waktu bermain: {playTime}</li>
+        </ul>
+      </div>
     </div>
   );
 }
